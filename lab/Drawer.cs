@@ -14,11 +14,12 @@ using System.Xml.Linq;
 
 namespace lab
 {
-    class Drawer
+    class Drawer: IDisposable
     {
-        Graphics Grap { get; set; }
-        Font ImageFont { get; set; }
-        SolidBrush SolBrush { get; set; }
+        private bool disposed = false;
+        public Graphics Grap { get; set; }
+        public Font ImageFont { get; set; }
+        public SolidBrush SolBrush { get; set; }
             public Drawer()
         {
             
@@ -44,6 +45,30 @@ namespace lab
                 gr.DrawString(date, ImageFont, SolBrush, point);
                 return resultimage = img.Image;
 
+        }
+        public void Dispose()
+        {
+            DisposeAlgo(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void DisposeAlgo(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    // нету полей
+                }
+                Grap.Dispose();
+                ImageFont.Dispose();
+                SolBrush.Dispose();
+                disposed = true;
+            }
+        }
+        ~Drawer()
+        {
+
+            DisposeAlgo(false);
         }
     }
 }
