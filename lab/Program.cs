@@ -194,9 +194,13 @@ namespace lab
                             }
                         }
                         break;
+                    case "q":
+                        Flag = false;
+                        break;
                 }
                 Flag = false;
             }
+            Console.WriteLine("END");
             Console.ReadLine();
         }
     }
