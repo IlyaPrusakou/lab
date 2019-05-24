@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="Drawer.cs" />
     <Compile Include="Fotoset.cs" />
-    <Compile Include="ImageStruct.cs" />
+    <Compile Include="ImageData.cs" />
     <Compile Include="MetaDataReceiver.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
