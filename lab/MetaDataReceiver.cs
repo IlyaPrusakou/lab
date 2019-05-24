@@ -2,25 +2,24 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace lab
 {
-    class MetaDataReceiver: Fotoset
+    class MetaDataReceiver: Fotoset, IDisposable
     {
-        
-        public UTF8Encoding utf;
+        private bool disposed = false;
         public Drawer Drawer { get; set; }
-        
         public MetaDataReceiver()
         {
-            utf = new UTF8Encoding();
+            
         }
         public MetaDataReceiver(Drawer dr)
         {
-            utf = new UTF8Encoding();
+            
             Drawer = dr;
         }
         
@@ -37,10 +36,6 @@ namespace lab
                 third = BitConverter.ToUInt32(Prop2.Value, 16) / BitConverter.ToUInt32(Prop2.Value, 20);
             }
             catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
             {
                 first = 0;
                 second = 0;
@@ -60,19 +55,33 @@ namespace lab
             string result = tulpe.first + "." + tulpe.second + tulpe.third;
             return result;
         }
+
         private string GetDate(Image foto)
         {
             PropertyItem propDate = null;
-            string stringDate = null;
+            DateTime date;
+
+            string stringDate = "";
             try
             {
                 propDate = foto.GetPropertyItem(0x0132);
-                stringDate = utf.GetString(propDate.Value);
+                if (propDate != null)
+                {
+                    ASCIIEncoding enc = new ASCIIEncoding();
+                    string interstring = enc.GetString(propDate.Value, 0, propDate.Len - 1);
+                    CultureInfo provider = CultureInfo.InvariantCulture;
+                    date = DateTime.ParseExact(interstring, "yyyy:MM:d H:m:s", provider);
+                    stringDate = date.ToString();
+                }
+                else
+                {
+                    Console.WriteLine("Property has not found");
+                }
             }
-            catch (Exception ex) { Console.WriteLine(ex.Message); }
-            finally { stringDate = "#####"; }
-            
-
+            catch (Exception ex)
+            {
+                stringDate = "undefinded";
+            }
 
             return stringDate;
         }
@@ -80,14 +89,39 @@ namespace lab
         {
             for (int i = 0; i < ImageSet.Count; i++)
             {
-                ImageStruct ist = ImageSet[i];
-                ist.Date = GetDate(ist.Image);
-                if (ist.Date == "#####") { ist.Date = ist.CreationTime.Replace(':', '-'); }
+                ImageData ist = ImageSet[i];
+                ist.Date = GetDate(ist.Image).RemoverInvalidSymbols();
+                if (ist.Date == "undefinded" || ist.Date == "" || ist.Date == " " || ist.Date == null)
+                {
+                    ist.Date = ist.CreationTime.RemoverInvalidSymbols();
+                }
                 ist.Longitude = Getlong(ist.Image);
                 ist.Widthude = GetWidth(ist.Image);
                 
                 ImageSet[i] = ist;
             }
+        }
+        public void Dispose()
+        {
+            DisposeAlgo(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void DisposeAlgo(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    // нету полей
+                }
+                Drawer.Dispose();
+                disposed = true;
+            }
+        }
+        ~MetaDataReceiver()
+        {
+
+            DisposeAlgo(false);
         }
     }
 }

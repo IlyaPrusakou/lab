@@ -14,7 +14,7 @@ using System.Xml.Linq;
 
 namespace lab
 {
-    public struct ImageStruct
+    public class ImageData: IDisposable
     {
         public int IdImage { get; set; }
         public Image Image { get; set; }
@@ -24,5 +24,33 @@ namespace lab
         public string Extension { get; set; }
         public string Location { get; set; }
         public string CreationTime { get; set; }
+        private bool disposed = false;
+        public void Dispose()
+        {
+            DisposeAlgo(true);
+            GC.SuppressFinalize(this);
+        }
+        protected virtual void DisposeAlgo(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    Date = null;
+                    Longitude = null;
+                    Widthude = null;
+                    Extension = null;
+                    Location = null;
+                    CreationTime = null;
+                }
+                Image.Dispose();
+                disposed = true;
+            }
+        }
+        ~ImageData()
+        {
+
+            DisposeAlgo(false);
+        }
     }
 }
