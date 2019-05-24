@@ -20,10 +20,9 @@ namespace lab
         public Graphics Grap { get; set; }
         public Font ImageFont { get; set; }
         public SolidBrush SolBrush { get; set; }
-            public Drawer()
+        public Drawer()
         {
-            
-            ImageFont = new Font("Arial", 200);
+            ImageFont = new Font("Arial", 50);
             SolBrush = new SolidBrush(Color.Blue);
         }
         private SizeF GetSize(string str, Graphics e)
@@ -36,7 +35,7 @@ namespace lab
             float vert = img.Width - (GetSize(str, e).Width + 100);
             return vert;
         }
-        public Image DrawTheString(ImageStruct img)
+        public Image DrawTheString(ImageData img)
         {
                 Image resultimage = null;
                 Graphics gr = Graphics.FromImage(img.Image);

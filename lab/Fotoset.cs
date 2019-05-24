@@ -18,7 +18,7 @@ namespace lab
     {
         
         
-        public List<ImageStruct> ImageSet { get; set; }
+        public List<ImageData> ImageSet { get; set; }
         private List<string> Pathes { get; set; }
         private List<string> Extensions { get; set; }
         private List<DateTime> CreationTime { get; set; }
@@ -28,7 +28,7 @@ namespace lab
         {
             Pathes = new List<string>();
             Extensions = new List<string>();
-            ImageSet = new List<ImageStruct>();
+            ImageSet = new List<ImageData>();
             CreationTime = new List<DateTime>();
 
         }
@@ -48,7 +48,7 @@ namespace lab
             for (int i = 0; i < Pathes.Count; i++)
             {
                 string str = Pathes[i];
-                ImageStruct structura = new ImageStruct
+                ImageData structura = new ImageData
                 {
                     IdImage = i,
                     Image = Bitmap.FromFile(str),

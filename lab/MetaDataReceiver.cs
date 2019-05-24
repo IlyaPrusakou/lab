@@ -41,12 +41,6 @@ namespace lab
                 second = 0;
                 third = 0;
             }
-            //finally
-            //{
-                //first = 0;
-                //second = 0;
-                //third = 0;
-            //}
             return (first, second, third);
         } 
         private string Getlong (Image foto)
@@ -61,19 +55,7 @@ namespace lab
             string result = tulpe.first + "." + tulpe.second + tulpe.third;
             return result;
         }
-        //private string GetDate(Image foto)
-        //{
-        //PropertyItem propDate = null;
-        //string stringDate = null;
-        //try
-        //{
-        //propDate = foto.GetPropertyItem(0x0132);
-        //stringDate = utf.GetString(propDate.Value);
-        //}
-        //catch (Exception ex) { stringDate = "#####"; }
-        //finally { stringDate = "#####"; }
-        //return stringDate;
-        //}
+
         private string GetDate(Image foto)
         {
             PropertyItem propDate = null;
@@ -82,7 +64,6 @@ namespace lab
             string stringDate = "";
             try
             {
-                
                 propDate = foto.GetPropertyItem(0x0132);
                 if (propDate != null)
                 {
@@ -108,9 +89,12 @@ namespace lab
         {
             for (int i = 0; i < ImageSet.Count; i++)
             {
-                ImageStruct ist = ImageSet[i];
+                ImageData ist = ImageSet[i];
                 ist.Date = GetDate(ist.Image).RemoverInvalidSymbols();
-                if (ist.Date == "undefinded") { ist.Date = ist.CreationTime.RemoverInvalidSymbols(); }
+                if (ist.Date == "undefinded" || ist.Date == "" || ist.Date == " " || ist.Date == null)
+                {
+                    ist.Date = ist.CreationTime.RemoverInvalidSymbols();
+                }
                 ist.Longitude = Getlong(ist.Image);
                 ist.Widthude = GetWidth(ist.Image);
                 

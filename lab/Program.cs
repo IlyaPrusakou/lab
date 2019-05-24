@@ -21,7 +21,7 @@ namespace lab
         public static DirectoryInfo TargetDir { get; set; }
         public static MetaDataReceiver Metadata { get; set; }
 
-        public static void Getloc (ImageStruct img, XMLWorker xmlworker, Requester requester)
+        public static void Getloc (ImageData img, XMLWorker xmlworker, Requester requester)
         {
             string longit = img.Longitude;
             string width = img.Widthude;
@@ -30,7 +30,7 @@ namespace lab
         }
         
 
-        public static void SaveImageCustom(ImageStruct imgstruct, Stream fs)
+        public static void SaveImageCustom(ImageData imgstruct, Stream fs)
         {
             switch (imgstruct.Extension)
             {
@@ -75,7 +75,7 @@ namespace lab
                         Metadata.GetData();
                         for (int i = 0; i< Metadata.ImageSet.Count; i++)
                         {
-                            List<ImageStruct> local = Metadata.ImageSet;
+                            List<ImageData> local = Metadata.ImageSet;
                             string name = local[i].Date.RemoverInvalidSymbols();
                             string path = TargetDir.FullName + @"\" + name + local[i].Extension;
                             if (File.Exists(path) == true) { path = TargetDir.FullName + @"\" + name +i + local[i].Extension;  }
@@ -98,7 +98,7 @@ namespace lab
                         for (int i = 0; i < Metadata.ImageSet.Count; i++)
                         {
                             Image StringImage = null;
-                            List<ImageStruct> local = Metadata.ImageSet;
+                            List<ImageData> local = Metadata.ImageSet;
                             string path = TargetDir.FullName + @"\" + local[i].IdImage + local[i].Extension;
                             if (File.Exists(path) == true) { path = TargetDir.FullName + @"\" + local[i].IdImage + i + local[i].Extension; }
                             FileStream fs = File.Create(path);
@@ -122,7 +122,7 @@ namespace lab
                         for (int i = 0; i < Metadata.ImageSet.Count; i++)
                         {
                           
-                            List<ImageStruct> local = Metadata.ImageSet;
+                            List<ImageData> local = Metadata.ImageSet;
                             string dirpath = TargetDir.FullName + @"\" + local[i].Date.Substring(6, 4);
                             string path = TargetDir.FullName + @"\" + local[i].IdImage + local[i].Extension; // тоже не нужно, заменить на  пустую строку
                             if (!Directory.Exists(dirpath))
@@ -160,7 +160,7 @@ namespace lab
                         
                         for (int i = 0; i < Metadata.ImageSet.Count; i++)
                         {
-                            ImageStruct img = Metadata.ImageSet[i];
+                            ImageData img = Metadata.ImageSet[i];
                             Getloc(img, xmlworker, requester);
                             
 
@@ -171,7 +171,7 @@ namespace lab
                         for (int i = 0; i < Metadata.ImageSet.Count; i++)
                         {
 
-                            List<ImageStruct> local = Metadata.ImageSet;
+                            List<ImageData> local = Metadata.ImageSet;
                             string dirpath = TargetDir.FullName + @"\" + local[i].Location;
                             string path = TargetDir.FullName + @"\" + local[i].IdImage + local[i].Extension; //это не нужно
                             if (!Directory.Exists(dirpath))

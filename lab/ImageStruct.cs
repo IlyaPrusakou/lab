@@ -14,7 +14,7 @@ using System.Xml.Linq;
 
 namespace lab
 {
-    public class ImageStruct: IDisposable
+    public class ImageData: IDisposable
     {
         public int IdImage { get; set; }
         public Image Image { get; set; }
@@ -47,7 +47,7 @@ namespace lab
                 disposed = true;
             }
         }
-        ~ImageStruct()
+        ~ImageData()
         {
 
             DisposeAlgo(false);
